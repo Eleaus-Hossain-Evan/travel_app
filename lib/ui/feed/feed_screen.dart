@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:travel_app/model/place.dart';
 
 import 'widget/place_card.dart';
-import 'widget/place_detail_screen.dart';
+import '../place_detail/place_detail_screen.dart';
 import 'widget/travel_navigation_bar.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -40,19 +40,27 @@ class _FeedScreenState extends State<FeedScreen> {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, kToolbarHeight + 20),
         itemBuilder: (BuildContext context, int index) {
           final place = TravelPlace.places[index];
-          return PlaceCard(
-            place: place,
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, animation, __) => FadeTransition(
-                    opacity: animation,
-                    child: PlaceDetailScreen(place: place),
-                  ),
-                ),
-              );
-            },
+          return Hero(
+            tag: place.id,
+            child: Material(
+              child: PlaceCard(
+                place: place,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, animation, __) => FadeTransition(
+                        opacity: animation,
+                        child: PlaceDetailScreen(
+                          place: place,
+                          screenHight: MediaQuery.of(context).size.height,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           );
         },
       ),
